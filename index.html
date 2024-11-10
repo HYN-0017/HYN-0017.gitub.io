@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Encyclopedia</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main container for the categories */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Category box styling */
+        .category-box {
+            background-color: #333;
+            color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .category-box:hover {
+            background-color: #555;
+        }
+
+        /* Add category button styling */
+        .add-category {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #cccccc;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-category:hover {
+            background-color: #aaaaaa;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            width: 300px;
+            height: 400px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal textarea {
+            width: 100%;
+            height: 80%;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .modal button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container for category boxes -->
+    <div class="container">
+        <div class="category-box" onclick="openEditor('Humanities')">Humanities</div>
+        <div class="category-box" onclick="openEditor('Nature')">Nature</div>
+        <div class="category-box" onclick="openEditor('Art')">Art</div>
+        <div class="category-box" onclick="openEditor('Philosophy')">Philosophy</div>
+    </div>
+
+    <!-- Add category button -->
+    <div class="add-category" onclick="addCategory()">+</div>
+
+    <!-- Modal for document editor -->
+    <div class="modal" id="editorModal">
+        <h2 id="editorTitle"></h2>
+        <textarea id="editorContent" placeholder="Write your content here..."></textarea>
+        <button onclick="saveContent()">Save</button>
+        <button onclick="closeEditor()">Close</button>
+    </div>
+
+    <script>
+        // Open editor with category name
+        function openEditor(category) {
+            document.getElementById('editorTitle').innerText = category;
+            document.getElementById('editorContent').value = localStorage.getItem(category) || '';
+            document.getElementById('editorModal').style.display = 'block';
+        }
+
+        // Save content to localStorage
+        function saveContent() {
+            const category = document.getElementById('editorTitle').innerText;
+            const content = document.getElementById('editorContent').value;
+            localStorage.setItem(category, content);
+            alert('Content saved!');
+        }
+
+        // Close editor
+        function closeEditor() {
+            document.getElementById('editorModal').style.display = 'none';
+        }
+
+        // Add new category box
+        function addCategory() {
+            const newCategory = prompt('Enter the new category name:');
+            if (newCategory) {
+                const categoryBox = document.createElement('div');
+                categoryBox.className = 'category-box';
+                categoryBox.textContent = newCategory;
+                categoryBox.onclick = () => openEditor(newCategory);
+                document.querySelector('.container').appendChild(categoryBox);
+            }
+        }
+    </script>
+</body>
+</html>
